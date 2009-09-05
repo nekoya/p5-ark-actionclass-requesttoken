@@ -148,7 +148,7 @@ __END__
 
 =head1 NAME
 
-Ark::ActionClass::RequestToken
+Ark::ActionClass::RequestToken - Token manager to prevent CSRF
 
 =head1 SYNOPSIS
 
