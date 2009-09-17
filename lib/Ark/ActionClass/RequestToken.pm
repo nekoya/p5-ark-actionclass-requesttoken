@@ -114,6 +114,7 @@ sub validate_token {
         ($ident ? "passed" : "failed")
     );
     $self->remove_token;
+    $self->is_valid_token;
 }
 
 sub remove_token {
