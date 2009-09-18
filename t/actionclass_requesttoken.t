@@ -57,7 +57,11 @@ use File::Temp;
 
     sub m_validate : Local {
         my ($self, $c) = @_;
-        $self->validate_token;
+        $c->res->body($self->validate_token);
+    }
+
+    sub m_is_valid : Local {
+        my ($self, $c) = @_;
         $c->res->body($self->is_valid_token);
     }
 
@@ -96,12 +100,17 @@ use Ark::Test 'T1',
     like $token, qr/^[0-9a-f]+$/, 'assert token regex';
     is(request(POST => "/m_validate", make_headers($token))->content, '1', 'token validate ok');
     is(get("/get_session"), '', 'token is removed');
+    is(get("/m_is_valid"), '1', 'token was valid');
 
     $token = get("/m_create");
     is length($token), 40, 'assert token length';
     is(get("/get_session"), $token, 'token is created');
     $token = get("/m_remove");
     is(get("/get_session"), '', 'token is removed');
+
+    get("/m_create");
+    is(request(POST => "/m_validate", make_headers('0000'))->content, '0', 'validation failed with invalid token');
+    is(get("/m_is_valid"), '0', 'token was invalid');
 }
 
 sub make_headers {
