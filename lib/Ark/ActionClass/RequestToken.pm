@@ -151,37 +151,64 @@ __END__
 
 =head1 NAME
 
-Ark::ActionClass::RequestToken - Token manager to prevent CSRF
+Ark::ActionClass::RequestToken - One time token provider across forms
 
 =head1 SYNOPSIS
 
-*use RequestToken
-in your controller
     package MyApp::Controller::Login;
     use Ark 'Controller';
     with 'Ark::ActionClass::RequestToken';
 
-*create token
-set action attribute
     sub index : Path CreateToken {
-or call manually
-    $self->create_token;
+        # write token parameter in your template. for instance
+        # <input name="_token" type="hidden" value="<?= $s->{ _token } ?>">
+    }
 
-*validate token
-set action attribute
     sub login : Path ValidateToken {
-or call manually
-    $self->validate_token;
+        die "token was invalid" unless $self->is_valid_token;
+        # authenticate
+    }
+
+=head1 ACTINOS
+
+=head2 CreateToken
+
+token will be stored in session and stash (default key is '_token').
+
+=head2 ValidateToken
+
 token will be removed after validate it.
 
-*remove token
-set action attribute
-    sub loggedin : Private RemoveToken {
-or call manually
-    $self->remove_token;
-in most cases you don't have to remove token manually.
+=head2 RemoveToken
 
-=head1 DESCRIPTION
+in most cases you don't have to remove token manually
+because ValidateToken contains remove action.
+
+=head1 CONFIGRATIONS
+
+default settings is here.
+
+    config 'ActionClass::RequestToken' => {
+        digest_model       => 'Digest',
+        stash_name         => '_token',
+        session_name       => '_token',
+        request_name       => '_token',
+        password_pre_salt  => '',
+        password_post_salt => '',
+    };
+
+=head1 METHODS
+
+=head2 create_token
+=head2 validate_token
+=head2 remove_token
+
+they works same as attributes.
+you can call them if you want to handle timing manually.
+
+=head2 is_valid_token
+
+check if last validation was successful.
 
 =head1 BUGS AND LIMITATIONS
 
@@ -190,6 +217,14 @@ No bugs have been reported.
 =head1 AUTHOR
 
 Ryo Miyake  C<< <ryo.studiom@gmail.com> >>
+
+=head1 SEE ALSO
+
+Catalyst::Controller::RequestToken
+
+Ark - light weight Perl framework like Catalyst
+
+http://github.com/typester/ark-perl
 
 =head1 LICENCE AND COPYRIGHT
 
