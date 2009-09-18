@@ -169,7 +169,13 @@ Ark::ActionClass::RequestToken - One time token provider across forms
         # authenticate
     }
 
-=head1 ACTINOS
+=head1 DESCRIPTION
+
+Ark::ActionClass::RequestToken provides 'one time token' for forms of your application to prevent CSRF attack.
+
+It inspired by Catalyst::Controller::RequestToken.
+
+=head1 ATTRIBUTES
 
 =head2 CreateToken
 
@@ -183,19 +189,6 @@ token will be removed after validate it.
 
 in most cases you don't have to remove token manually
 because ValidateToken contains remove action.
-
-=head1 CONFIGRATIONS
-
-default settings is here.
-
-    config 'ActionClass::RequestToken' => {
-        digest_model       => 'Digest',
-        stash_name         => '_token',
-        session_name       => '_token',
-        request_name       => '_token',
-        password_pre_salt  => '',
-        password_post_salt => '',
-    };
 
 =head1 METHODS
 
@@ -213,6 +206,19 @@ check if last validation was successful.
 =head1 BUGS AND LIMITATIONS
 
 No bugs have been reported.
+
+=head1 CONFIGRATIONS
+
+default settings is here.
+
+    config 'ActionClass::RequestToken' => {
+        digest_model       => 'Digest',
+        stash_name         => '_token',
+        session_name       => '_token',
+        request_name       => '_token',
+        password_pre_salt  => '',
+        password_post_salt => '',
+    };
 
 =head1 AUTHOR
 
