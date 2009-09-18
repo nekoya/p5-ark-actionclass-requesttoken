@@ -45,8 +45,10 @@ has request_token_digest_model => (
     lazy    => 1,
     default => sub {
         my $self  = shift;
-        my $model = $self->app->model($self->class_config->{ digest_model })
-            || $self->app->model('Digest');
+        $self->app->model(
+            $self->class_config->{ digest_model }
+            || 'Digest'
+        );
     },
 );
 
