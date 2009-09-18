@@ -109,7 +109,7 @@ sub validate_token {
     }
 
     my $req = $c->req->param($self->request_token_request_name)  || '';
-    my $ident = $ses eq $req;
+    my $ident = ($ses eq $req) ? 1 : 0;
     $c->session->set($self->request_token_ident, $ident);
     $c->log(debug =>
         "validate token: $ses - $req : ".
