@@ -90,6 +90,9 @@ use Ark::Test 'T1',
     is(get("/get_session"), $token, 'token is created');
     get("/remove");
     is(get("/get_session"), '', 'token is removed');
+
+    get("/create");
+    is(request(POST => "/validate", make_headers('0000'))->content, '0', 'validation failed with invalid token');
 }
 
 {
