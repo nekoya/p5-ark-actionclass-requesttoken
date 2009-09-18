@@ -87,9 +87,8 @@ use Ark::Test 'T1',
     is(get("/get_session"), '', 'token is removed');
 
     $token = get("/create");
-    is length($token), 40, 'assert token length';
     is(get("/get_session"), $token, 'token is created');
-    $token = get("/remove");
+    get("/remove");
     is(get("/get_session"), '', 'token is removed');
 }
 
@@ -103,9 +102,8 @@ use Ark::Test 'T1',
     is(get("/m_is_valid"), '1', 'token was valid');
 
     $token = get("/m_create");
-    is length($token), 40, 'assert token length';
     is(get("/get_session"), $token, 'token is created');
-    $token = get("/m_remove");
+    get("/m_remove");
     is(get("/get_session"), '', 'token is removed');
 
     get("/m_create");
